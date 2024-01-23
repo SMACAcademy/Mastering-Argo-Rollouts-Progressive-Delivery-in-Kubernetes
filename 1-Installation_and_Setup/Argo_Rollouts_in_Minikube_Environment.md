@@ -1,5 +1,5 @@
 
-##s Setting up Argo Rollouts in a Minikube environment
+## Setting up Argo Rollouts in a Minikube environment
 
 ### Prerequisites 
 - **Minikube** : Ensure Minikube is installed on your machine. If not, you can install it following the instructions on the [official Minikube website]() . 
