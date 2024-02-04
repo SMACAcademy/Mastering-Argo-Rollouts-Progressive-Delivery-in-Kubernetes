@@ -1,3 +1,4 @@
+```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -442,3 +443,4 @@ status:
     startTime: 2019-10-00T1234
   - reason: AnalysisRunInconclusive
     startTime: 2019-10-00T1234 
+```    
