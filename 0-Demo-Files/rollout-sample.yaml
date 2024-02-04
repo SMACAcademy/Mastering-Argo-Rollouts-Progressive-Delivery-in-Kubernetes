@@ -1,4 +1,3 @@
-```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -28,5 +27,4 @@ spec:
       - setWeight: 60
       - pause: {duration: 10s}
       - setWeight: 80
-      - pause: {duration: 10s}
-```      
+      - pause: {duration: 10s}      
