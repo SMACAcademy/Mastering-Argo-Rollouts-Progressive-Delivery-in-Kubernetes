@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: webapp-response-time
+spec:
+  metrics:
+    - name: response-time
+      interval: 5m
+      provider:
+        prometheus:
+          address: http://prometheus-server.prometheus.svc.cluster.local  # Update this URL based on your Prometheus setup
+          query: |
+            avg(http_request_duration_seconds{app="webapp"})
+      successCondition: result < 0.5
+      failureCondition: result >= 0.5
