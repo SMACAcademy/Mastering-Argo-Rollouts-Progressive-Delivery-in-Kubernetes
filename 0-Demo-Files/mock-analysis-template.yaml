@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: mock-success-rate-check
+spec:
+  metrics:
+    - name: success-rate
+      # This is a mock provider for demonstration purposes.
+      # In a real scenario, you would use a real metric provider, such as Prometheus.
+      provider:
+        job:
+          spec:
+            template:
+              spec:
+                containers:
+                - name: main
+                  image: busybox
+                  command: [sh, -c]
+                  args: ["echo -n 99.5"]
+                restartPolicy: Never
+      successCondition: "result >= 99"

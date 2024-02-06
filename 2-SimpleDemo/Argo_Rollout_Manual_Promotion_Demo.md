@@ -49,7 +49,7 @@ kubectl apply -f rollout.yaml
 Check the status of your rollout:
 
 ```bash
-argo rollouts get rollout canary-demo-app
+kubectl argo rollouts get rollout canary-demo-app
 ```
 
 ### Step 4: Manually Promote to Next Step
@@ -57,7 +57,7 @@ argo rollouts get rollout canary-demo-app
 Promote the rollout to proceed to the next step:
 
 ```bash
-argo rollouts promote canary-demo-app
+kubectl argo rollouts promote canary-demo-app
 ```
 
 ### Step 5: Monitor Rollout Status
@@ -65,7 +65,7 @@ argo rollouts promote canary-demo-app
 Monitor the status with:
 
 ```bash
-argo rollouts get rollout canary-demo-app --watch
+kubectl argo rollouts get rollout canary-demo-app --watch
 ```
 
 ### Step 6: Final Promotion
