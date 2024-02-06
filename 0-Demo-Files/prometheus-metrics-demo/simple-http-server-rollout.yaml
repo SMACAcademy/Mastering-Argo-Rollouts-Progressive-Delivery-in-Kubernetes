@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: simple-http-server-rollout
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simple-http-server
+  template:
+    metadata:
+      labels:
+        app: simple-http-server
+    spec:
+      containers:
+      - name: http-server
+        image: mendhak/http-https-echo
+        ports:
+        - containerPort: 80
+  strategy:
+    canary:
+      steps:
+      - setWeight: 50
+      - pause: {duration: 15s}
+      - analysis:
+          templates:
+          - templateName: http-response-time-check
+      - setWeight: 100

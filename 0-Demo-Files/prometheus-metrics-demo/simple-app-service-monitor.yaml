@@ -1,0 +1,11 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: simple-http-server-monitor
+spec:
+  selector:
+    matchLabels:
+      app: simple-http-server
+  endpoints:
+  - port: http
+    interval: 15s
