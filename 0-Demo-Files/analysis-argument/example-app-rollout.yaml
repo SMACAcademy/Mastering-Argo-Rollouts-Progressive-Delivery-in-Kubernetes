@@ -17,27 +17,21 @@ spec:
         image: nginx:1.19.10
   strategy:
     canary:
-      analysis:
-        templates:
-        - templateName: resource-usage-analysis
-        args:
-        - name: required-pod-count
-          value: "3"
       steps:
       - setWeight: 20
       - pause: {duration: 10s}
       - analysis:
           templates:
           - templateName: resource-usage-analysis
-            args:
-            - name: required-pod-count
-              value: "3"
+          args:
+          - name: required-pod-count
+            value: "3"
       - setWeight: 50
       - pause: {duration: 20s}
       - analysis:
           templates:
           - templateName: resource-usage-analysis
-            args:
-            - name: required-pod-count
-              value: "3"
+          args:
+          - name: required-pod-count
+            value: "3"
       - setWeight: 100
