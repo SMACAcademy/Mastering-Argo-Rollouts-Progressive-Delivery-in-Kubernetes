@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: webserver
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: web-nginx
+  strategy:
+    canary:
+      canaryService: {{ .Chart.Name }}-canary
+      stableService: {{ .Chart.Name }}-stable
+      trafficRouting:
+        nginx:
+          stableIngress: {{ .Chart.Name }}-ingress
+          additionalIngressAnnotations:
+            canary-by-header: {{ .Values.canary.header.name }}
+            canary-by-header-value: {{ .Values.canary.header.value }}
+      steps:
+      - setWeight: 50
+      - pause: {duration: 600}
+      - setWeight: 100
+      - pause: {duration: 100}
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: web-nginx
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
