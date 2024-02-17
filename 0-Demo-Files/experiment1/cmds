@@ -1,0 +1,8 @@
+
+kubectl apply -f analysis-template.yaml
+
+kubectl apply -f simple-experiment.yaml
+
+
+kubectl get experiment simple-demo-experiment
+kubectl describe experiment simple-demo-experiment

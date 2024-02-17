@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: simple-analysis
+spec:
+  metrics:
+  - name: success-criteria
+    successCondition: result.major == 1
+    provider:
+      job:
+        spec:
+          template:
+            spec:
+              containers:
+              - name: main
+                image: alpine:3.8
+                command: [sh, -c]
+                args: ["echo -n '{\"major\":1, \"minor\":0}'"]
+              restartPolicy: Never
