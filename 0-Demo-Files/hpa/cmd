@@ -1,0 +1,8 @@
+kubectl run -i --tty load-generator --image=busybox /bin/sh
+
+while true; do wget -q -O- http://rollouts-demo; done
+
+
+kubectl get hpa rollouts-demo-hpa --watch
+
+
