@@ -1,0 +1,76 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollout-experiment
+spec:
+  replicas: 2
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {duration: 10}
+      # The second step is the experiment which starts a single canary pod
+      - experiment:
+          duration: 1m
+          templates:
+          - name: canary
+            specRef: canary
+          # This experiment performs its own analysis by referencing an AnalysisTemplates
+          # The success or failure of these runs will progress or abort the rollout respectively.
+          analyses:
+          - name: canary-experiment
+            templateName: webmetric
+      - setWeight: 40
+      - pause: {duration: 10}
+      - setWeight: 60
+      - pause: {duration: 10}
+      - setWeight: 80
+      - pause: {duration: 10}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollout-experiment
+  template:
+    metadata:
+      labels:
+        app: rollout-experiment
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-weather-svc
+spec:
+  selector:
+    app: rollout-experiment
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 8080
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rollout-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: rollout-weather-svc
+            port:
+              number: 80
