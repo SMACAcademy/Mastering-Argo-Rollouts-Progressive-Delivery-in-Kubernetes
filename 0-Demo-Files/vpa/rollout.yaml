@@ -1,23 +1,36 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: rollouts-demo
+  name: vpa-demo-rollout
+  namespace: test-vpa
 spec:
-  replicas: 3
+  replicas: 5
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {duration: 10}
+      - setWeight: 40
+      - pause: {duration: 10}
+      - setWeight: 60
+      - pause: {duration: 10}
+      - setWeight: 80
+      - pause: {duration: 10}
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: rollouts-demo
+      app: vpa-demo-rollout
   template:
     metadata:
       labels:
-        app: rollouts-demo
+        app: vpa-demo-rollout
     spec:
       containers:
-      - name: rollouts-demo-container
+      - name: vpa-demo-rollout
         image: argoproj/rollouts-demo:blue
         ports:
         - containerPort: 8080
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
+        resources:
+          requests:
+            cpu: "5m"       
+            memory: "5Mi" 

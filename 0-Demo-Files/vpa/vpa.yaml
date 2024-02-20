@@ -1,11 +1,22 @@
-apiVersion: autoscaling.k8s.io/v1
-kind: VerticalPodAutoscaler
-metadata:
-  name: rollouts-demo-vpa
-spec:
-  targetRef:
-    apiVersion: "apps/v1"
-    kind:       "Rollout"
-    name:       "rollouts-demo"
-  updatePolicy:
-    updateMode: "Auto"
+apiVersion: "autoscaling.k8s.io/v1beta2"
+kind: VerticalPodAutoscaler  
+metadata:  
+  name: vpa-rollout-example  
+  namespace: test-vpa  
+spec:  
+  targetRef:  
+    apiVersion: "argoproj.io/v1alpha1"  
+    kind: Rollout  
+    name: vpa-demo-rollout  
+  updatePolicy:  
+    updateMode: "Auto"  
+  resourcePolicy:  
+    containerPolicies:  
+    - containerName: '*'  
+    minAllowed:  
+      cpu: 5m  
+      memory: 5Mi  
+    maxAllowed:  
+      cpu: 1  
+      memory: 500Mi  
+    controlledResources: ["cpu", "memory"]  
