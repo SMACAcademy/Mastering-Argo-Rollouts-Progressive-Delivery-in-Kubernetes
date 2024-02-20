@@ -8,10 +8,12 @@ kubectl get hpa rollouts-demo-hpa --watch
 kubectl get pods -n kube-system | grep metrics-server
 
 
+
+
 minikube addons list
 
 
 minikube addons enable metrics-server
 
-
+kubectl top pods
 
