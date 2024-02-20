@@ -2,7 +2,6 @@ apiVersion: "autoscaling.k8s.io/v1beta2"
 kind: VerticalPodAutoscaler  
 metadata:  
   name: vpa-rollout-example  
-  namespace: test-vpa  
 spec:  
   targetRef:  
     apiVersion: "argoproj.io/v1alpha1"  
