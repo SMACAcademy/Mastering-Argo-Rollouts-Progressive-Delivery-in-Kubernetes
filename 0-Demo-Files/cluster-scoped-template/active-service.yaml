@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blue-green-demo-active
+spec:
+  selector:
+    app: blue-green-demo
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+
